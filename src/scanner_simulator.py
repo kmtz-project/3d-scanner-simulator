@@ -1,4 +1,5 @@
 import math
+import shutil
 
 from direct.showbase.ShowBase import ShowBase, PandaNode
 from direct.task import Task
@@ -6,8 +7,11 @@ from panda3d.core import Filename, Camera, WindowProperties
 
 
 class ScannerSimulatorApp(ShowBase):
-    def __init__(self):
+    def __init__(self, left_output_path="", right_output_path=""):
         ShowBase.__init__(self)
+
+        self.left_output_path = left_output_path
+        self.right_output_path = right_output_path
 
         self.__init_cameras__()
         self.__init_window__()
@@ -28,14 +32,14 @@ class ScannerSimulatorApp(ShowBase):
         # Create and init left camera
         left_camera = self.cameras_base.attach_new_node(Camera("left"))
         left_camera.set_name("left_camera")
-        left_camera.set_pos(0, -0.5, 0)
+        left_camera.set_pos(0, -0.1, 0)
         self.left_display_region = self.win.make_display_region(0, 0.5, 0, 1)
         self.left_display_region.set_camera(left_camera)
 
         # Create and init right camera
         right_camera = self.cameras_base.attach_new_node(Camera("right"))
         right_camera.set_name("right_camera")
-        right_camera.set_pos(0, 0.5, 0)
+        right_camera.set_pos(0, 0.1, 0)
         self.right_display_region = self.win.make_display_region(0.5, 1, 0, 1)
         self.right_display_region.set_camera(right_camera)
 
@@ -78,18 +82,18 @@ class ScannerSimulatorApp(ShowBase):
         # Rotate cameras platform
         self.cameras_base.set_hpr(self.rotation_angle, 0, 0)
 
+        file_name = "{0:0=3d}.png".format(self.rotation_angle)
+
         # Save snapshot from left camera
-        file_path = "cam_left_{}.png".format(self.rotation_angle)
-        self.left_display_region.save_screenshot(Filename(file_path))
+        self.left_display_region.save_screenshot(Filename(file_name))
+        file_path = "{}/{}".format(self.left_output_path, file_name)
+        shutil.move(file_name, file_path)
 
         # Save snapshot from right camera
-        file_path = "cam_right_{}.png".format(self.rotation_angle)
-        self.right_display_region.save_screenshot(Filename(file_path))
+        self.right_display_region.save_screenshot(Filename(file_name))
+        file_path = "{}/{}".format(self.right_output_path, file_name)
+        shutil.move(file_name, file_path)
 
         self.rotation_angle += 15
 
         return Task.cont
-
-
-app = ScannerSimulatorApp()
-app.run()
