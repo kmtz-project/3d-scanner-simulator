@@ -56,23 +56,23 @@ class ScannerSimulatorApp(ShowBase):
     def __init_scene__(self):
         # Create parent nodes
         scene = self.render.attach_new_node(PandaNode("scene"))
-        boxes = scene.attach_new_node(PandaNode("boxes"))
+        objects = scene.attach_new_node(PandaNode("objects"))
 
-        # Instantiate box model prefab
-        box = self.loader.load_model("models/box")
-        box.reparent_to(boxes)
+        # Instantiate object model prefab
+        obj = self.loader.load_model("../data/models/box.3ds")
+        obj.reparent_to(objects)
 
-        # Instantiate copies of box model
-        box_number = 10
-        angle_step = 2 * math.pi / box_number
+        # Instantiate copies of model
+        obj_number = 10
+        angle_step = 2 * math.pi / obj_number
         radius = 10
-        for i in range(box_number):
-            placeholder = boxes.attach_new_node("box_{}".format(i))
+        for i in range(obj_number):
+            placeholder = objects.attach_new_node("obj_{}".format(i))
             placeholder.set_pos(radius * math.cos(i * angle_step), radius * math.sin(i * angle_step), 0)
-            box.instance_to(placeholder)
+            obj.instance_to(placeholder)
 
         # Destroy box model prefab
-        box.remove_node()
+        obj.remove_node()
 
 
     def rotation_task(self, task):
