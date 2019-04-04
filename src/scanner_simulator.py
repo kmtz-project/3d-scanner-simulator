@@ -2,7 +2,6 @@ import math
 import shutil
 
 from direct.showbase.ShowBase import ShowBase, PandaNode
-from direct.task import Task
 from panda3d.core import Filename, Camera, WindowProperties
 
 
@@ -76,8 +75,11 @@ class ScannerSimulatorApp(ShowBase):
 
 
     def rotation_task(self, task):
+        if task.time < 0.04:
+            return task.cont
+
         if self.rotation_angle > 360:
-            return Task.exit
+            return task.exit
 
         # Rotate cameras platform
         self.cameras_base.set_hpr(self.rotation_angle, 0, 0)
@@ -96,4 +98,4 @@ class ScannerSimulatorApp(ShowBase):
 
         self.rotation_angle += 15
 
-        return Task.cont
+        return task.cont
