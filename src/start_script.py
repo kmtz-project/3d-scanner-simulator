@@ -1,8 +1,8 @@
 import cv2 as cv
 import os
 
-from .point_cloud_builder import PointCloudBuilder
-from .scanner_simulator import ScannerSimulatorApp
+from src.point_cloud_builder import PointCloudBuilder
+from src.scanner_simulator import ScannerSimulatorApp
 
 data_path = "../data"
 point_clouds_path = data_path + "/point_clouds"
