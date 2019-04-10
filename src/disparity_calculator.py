@@ -22,7 +22,7 @@ class DisparityCalculator:
         right_matcher = cv.ximgproc.createRightMatcher(left_matcher)
 
         lmbda = 80000  # 80000
-        sigma = 2.8    # 1.2
+        sigma = 2.8  # 1.2
 
         wls_filter = cv.ximgproc.createDisparityWLSFilter(matcher_left=left_matcher)
         wls_filter.setLambda(lmbda)
@@ -34,7 +34,7 @@ class DisparityCalculator:
         disp_right = np.int16(disp_right)
 
         filtered_img = wls_filter.filter(disp_left, img_left, None, disp_right)
-        filtered_img = filtered_img[:, 100:] # Crop image
+        filtered_img = filtered_img[:, 100:]  # Crop image
         filtered_img = cv.normalize(src=filtered_img, dst=filtered_img, beta=0, alpha=255, norm_type=cv.NORM_MINMAX)
         filtered_img = np.uint8(filtered_img)
 
