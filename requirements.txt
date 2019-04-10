@@ -1,4 +1,4 @@
 numpy
+opencv-contrib-python
 opencv-python
 panda3d
-pclpy
