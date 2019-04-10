@@ -1,0 +1,48 @@
+<CoordinateSystem> { Z-up } 
+<Texture> UVMap_Wood_22.jpg {
+  "./tex/Wood_22.jpg"
+  <Scalar> envtype { MODULATE }
+  <Scalar> minfilter { LINEAR_MIPMAP_LINEAR }
+  <Scalar> magfilter { LINEAR_MIPMAP_LINEAR }
+  <Scalar> wrap { REPEAT }
+}
+
+  <Group> Plane.001 {
+    <Transform> {
+      <Matrix4> {
+        7.549790126404332e-08 0.0 1.0 0.0 
+        0.0 1.0 0.0 0.0 
+        -1.0 0.0 7.549790126404332e-08 0.0 
+        0.0999816432595253 0.047644879668951035 1.0142382383346558 1.0 
+      }
+    }
+    
+    <VertexPool> Plane.001 {
+    
+      <Vertex> 0 {-9.857617 -9.523551 -0.918591
+        <UV>  {
+          0.000000 0.000000 
+        }
+      }
+      <Vertex> 1 {10.142383 -9.523551 -0.918591
+        <UV>  {
+          1.000000 0.000000 
+        }
+      }
+      <Vertex> 2 {10.142383 10.476449 -0.918591
+        <UV>  {
+          1.000000 1.000000 
+        }
+      }
+      <Vertex> 3 {-9.857617 10.476449 -0.918591
+        <UV>  {
+          0.000000 1.000000 
+        }
+      }}
+    
+    
+    <Polygon> {
+      <Normal> {0.000000 0.000000 1.000000}
+      <VertexRef> { 0 1 2 3 <Ref> { Plane.001 }} 
+    }
+  }
