@@ -26,17 +26,22 @@ class FeaturesExtractor:
 
 class Matcher:
     def bruteforce(self, image_1, image_2):
+        result = []
+
         matcher = cv.BFMatcher(cv.NORM_HAMMING2, crossCheck=True)
-        matches = matcher.match(image_1.descriptors, image_2.descriptors)
-        # matches = sorted(matches, key=lambda x: x.distance)[:10]
+        try:
+            matches = matcher.match(image_1.descriptors, image_2.descriptors)
+            matches = sorted(matches, key=lambda x: x.distance)[:5]
 
-        # match_image = image_1.image
-        # match_image = cv.drawMatches(image_1.image, image_1.keypoints,
-        #                              image_2.image, image_2.keypoints, matches,
-        #                              match_image, flags=2)
-        # plt.imshow(match_image), plt.show()
+            for match in matches:
+                keypoint_1 = tuple([int(x) for x in image_1.keypoints[match.queryIdx].pt])
+                keypoint_2 = tuple([int(x) for x in image_2.keypoints[match.trainIdx].pt])
 
-        return matches
+                result.append([keypoint_1, keypoint_2])
+        except cv.error:
+            pass
+
+        return result
 
     def flann(self, image_1, image_2):
         matcher = cv.DescriptorMatcher_create(cv.DescriptorMatcher_FLANNBASED)
@@ -47,14 +52,16 @@ class Matcher:
         for m, n in matches:
             if m.distance < ratio_thresh * n.distance:
                 good_matches.append(m)
+        good_matches = sorted(good_matches, key=lambda x: x.distance)[:10]
 
-        # match_image = image_1.image
-        # match_image = cv.drawMatches(image_1.image, image_1.keypoints,
-        #                              image_2.image, image_2.keypoints, good_matches,
-        #                              match_image, flags=2)
-        # plt.imshow(match_image), plt.show()
+        result = []
+        for match in good_matches:
+            keypoint_1 = tuple([int(x) for x in image_1.keypoints[match.queryIdx].pt])
+            keypoint_2 = tuple([int(x) for x in image_2.keypoints[match.trainIdx].pt])
 
-        return good_matches
+            result.append([keypoint_1, keypoint_2])
+
+        return result
 
 
 class ImageMatcher:
