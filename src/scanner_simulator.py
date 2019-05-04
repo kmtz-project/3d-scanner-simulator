@@ -28,18 +28,30 @@ class ScannerSimulatorApp(ShowBase):
         self.cameras_base.set_pos(0, 0, 2)
 
         # Create and init left camera
-        left_camera = self.cameras_base.attach_new_node(Camera("left"))
+        left_cam = Camera("left")
+        left_cam.set_lens(self.__init_lens__(left_cam.get_lens()))
+
+        left_camera = self.cameras_base.attach_new_node(left_cam)
         left_camera.set_name("left_camera")
         left_camera.set_pos(0, -0.1, 0)
         self.left_display_region = self.win.make_display_region(0, 0.5, 0, 1)
         self.left_display_region.set_camera(left_camera)
 
         # Create and init right camera
-        right_camera = self.cameras_base.attach_new_node(Camera("right"))
+        right_cam = Camera("right")
+        right_cam.set_lens(self.__init_lens__(right_cam.get_lens()))
+
+        right_camera = self.cameras_base.attach_new_node(right_cam)
         right_camera.set_name("right_camera")
         right_camera.set_pos(0, 0.1, 0)
         self.right_display_region = self.win.make_display_region(0.5, 1, 0, 1)
         self.right_display_region.set_camera(right_camera)
+
+    def __init_lens__(self, lens):
+        lens.set_near_far(0.03, 1000000)
+        lens.set_fov(60)
+
+        return lens
 
     def __init_window__(self):
         # Remove current display region
