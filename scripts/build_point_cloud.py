@@ -54,17 +54,16 @@ for file_name in file_names:
     img_left = cv.imread(left_path)
     img_right = cv.imread(right_path)
 
-    # disparity_map = disparity_calculator.get_disparity_map(img_left, img_right)
-    # cv.imwrite(disparity_map, disp_path)
+    disparity_map = disparity_calculator.get_disparity_map(img_left, img_right)
+    # depth_map = depth_parser.get_depth_map_from_file(depth_map_path)
 
-    depth_map = depth_parser.get_depth_map_from_file(depth_map_path)
+    points, colors = cloud_builder.build_point_cloud_by_disparity(img_left, disparity_map)
+    # points, colors = cloud_builder.build_point_cloud_by_depth(img_left, depth_map)
 
-    # points, colors = cloud_builder.build_point_cloud(img_left, disparity_map)
-    points, colors = cloud_builder.build_point_cloud_by_depth(img_left, depth_map)
     # __save_point_cloud_to_file__(points, colors, ply_path)
 
     data.append({
-        'disp': depth_map,
+        'disp': disparity_map,
         'point_cloud': {
             'points': points,
             'colors': colors
